@@ -1,7 +1,6 @@
 import asyncio
 import logging
 import sys
-import threading
 
 from aiogram import Bot
 from aiogram.enums import ParseMode

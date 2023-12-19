@@ -1,5 +1,6 @@
 import re
 
+
 def format_russian_phone_number(phone_number):
     # Удаляем все нецифровые символы
     digits = re.sub(r'\D', '', phone_number)
@@ -19,8 +20,7 @@ def format_russian_phone_number(phone_number):
 
     return formatted_number
 
+
 def is_valid_group_number(group_number):
     pattern = r'^\w{2}БО-\d{2}-\d{2}$'
     return bool(re.match(pattern, group_number))
-
-

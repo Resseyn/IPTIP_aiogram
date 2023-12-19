@@ -1,10 +1,9 @@
 from aiogram import F
-from aiogram.client import bot
 from aiogram.filters import Command
-from aiogram.types import CallbackQuery, InputMedia, InputMediaPhoto, Message
+from aiogram.types import CallbackQuery, InputMediaPhoto, Message
 from aiogram.utils.markdown import hbold
 
-from data.user_interactions import register_states, creating_states
+from data.user_interactions import creating_states
 from database.mongo import mongo_comics
 from keyboard import start_keyboard
 from keyboard.comic_keyboard_constructor import create_comic_kb
@@ -18,22 +17,25 @@ async def main_menu(callback: CallbackQuery):
                                  caption=f"Привет, {hbold(callback.from_user.full_name)}!\nВыбери комикс!")
     await callback.message.edit_media(media=send_media, reply_markup=start_keyboard.keyboard)
 
+
 @dp.callback_query(F.data.startswith("comic"))
 async def choose_comic_page_callback(callback: CallbackQuery):
     data = callback.data.split(",")
     if len(data) == 1:
         data.append("1")
-    keyboard = create_comic_kb(data[0],pic_pathes[data[0]], data[1])
-    send_media = InputMediaPhoto(media=pic_pathes[data[0]][str(int(data[1]) -1)],
+    keyboard = create_comic_kb(data[0], pic_pathes[data[0]], data[1])
+    send_media = InputMediaPhoto(media=pic_pathes[data[0]][str(int(data[1]) - 1)],
                                  caption="")
     await callback.message.edit_media(media=send_media, reply_markup=keyboard)
 
+
 @dp.callback_query(F.data == "create")
 async def create_comic(callback: CallbackQuery):
-    creating_states[callback.from_user.id] = {"data":[]}
+    creating_states[callback.from_user.id] = {"data": []}
     send_media = InputMediaPhoto(media=pic_pathes["start"],
                                  caption=f"Введи название нового комикса")
     await callback.message.edit_media(media=send_media)
+
 
 @dp.message(Command("end"))
 async def photo_for_comics_handler(message: Message):
@@ -50,7 +52,8 @@ async def photo_for_comics_handler(message: Message):
         result = mongo_comics.find_one(filter_dict)
 
         if result is not None:
-            mongo_comics.update_one(filter=filter_dict, update={"$set": {str(creating_states[message.from_user.id]["data"][0]): new_comic}})
+            mongo_comics.update_one(filter=filter_dict,
+                                    update={"$set": {str(creating_states[message.from_user.id]["data"][0]): new_comic}})
         else:
             dict_for_mongo = {
                 "chat_id": message.from_user.id,
@@ -59,15 +62,19 @@ async def photo_for_comics_handler(message: Message):
             mongo_comics.insert_one(dict_for_mongo)
 
         await message.answer_photo(photo=pic_pathes["start"],
-                                       caption=f"Комикс {creating_states[message.from_user.id]['data'][0]} создан!")
+                                   caption=f"Комикс {creating_states[message.from_user.id]['data'][0]} создан!")
         creating_states.pop(message.from_user.id)
+
+
 @dp.message(lambda message: message.from_user.id in creating_states)
 async def photo_for_comics_handler(message: Message):
-    if (message.text is not None) and (message.photo is None) and len(creating_states[message.from_user.id]["data"]) == 0:
+    if (message.text is not None) and (message.photo is None) and len(
+            creating_states[message.from_user.id]["data"]) == 0:
         if len(message.text) < 30:
             creating_states[message.from_user.id]["data"].append(message.text)
             await message.answer_photo(photo=pic_pathes["start"],
-                                       caption=f"Отлично, комикс - {message.text}\nНачинай отправлять содержание комикса\n" +
+                                       caption=f"Отлично, комикс - {message.text}\nНачинай отправлять содержание "
+                                               f"комикса\n" +
                                                f"Пропиши /end для сохранения результата")
         else:
             await message.answer_photo(photo=pic_pathes["start"],

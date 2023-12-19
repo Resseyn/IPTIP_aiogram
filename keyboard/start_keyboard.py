@@ -27,7 +27,6 @@ big_button_6 = InlineKeyboardButton(
     callback_data='delete'
 )
 
-
 keyboard = InlineKeyboardMarkup(
     inline_keyboard=[[big_button_1],
                      [big_button_2],

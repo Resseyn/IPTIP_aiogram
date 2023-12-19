@@ -1,5 +1,4 @@
 
-
 comic_1 = {
     "0": "https://th.bing.com/th/id/OIG.dn7E_aXvWDXX6rHn9giu?pid=ImgGn",
     "1": "https://th.bing.com/th/id/OIG.Kure9VtmMqnTd4Jxg93V?pid=ImgGn",

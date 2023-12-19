@@ -1,20 +1,16 @@
-from aiogram import F
-from aiogram.filters import command, CommandStart
-from aiogram.types import Message, InputMediaPhoto
+from aiogram.types import Message
 from aiogram.utils.markdown import hbold
-from sqlalchemy.orm import sessionmaker
-
-import keyboard.start_keyboard
 from data.orm_classes import Student
 from data.user_interactions import register_states
-from database.postgres import engine, session, students
+from database.postgres import session, students
 from helpers.funcs import format_russian_phone_number, is_valid_group_number
 from keyboard import start_keyboard
 from loader import dp
 from utils.base_pics import pic_pathes
 
 
-@dp.message(lambda message: message.from_user.id in register_states and register_states[message.from_user.id]["stage"] == 1)
+@dp.message(
+    lambda message: message.from_user.id in register_states and register_states[message.from_user.id]["stage"] == 1)
 async def stage_1_register_handler(message: Message):
     if message.text is not None:
         if message.text.find(" ") == -1:
@@ -27,10 +23,11 @@ async def stage_1_register_handler(message: Message):
             register_states[message.from_user.id]["data"].append(name)
             print(register_states[message.from_user.id])
             await message.answer_photo(photo=pic_pathes["start"],
-                                         caption="Отлично, а теперь введи свой номер телефона")
+                                       caption="Отлично, а теперь введи свой номер телефона")
 
 
-@dp.message(lambda message: message.from_user.id in register_states and register_states[message.from_user.id]["stage"] == 2)
+@dp.message(
+    lambda message: message.from_user.id in register_states and register_states[message.from_user.id]["stage"] == 2)
 async def stage_2_register_handler(message: Message):
     if message.text is not None:
         number = format_russian_phone_number(message.text)
@@ -41,9 +38,12 @@ async def stage_2_register_handler(message: Message):
             register_states[message.from_user.id]["stage"] += 1
             register_states[message.from_user.id]["data"].append(number)
             await message.answer_photo(photo=pic_pathes["start"],
-                                   caption="Отлично, а теперь введи свою группу и институт в формате: ЭФБО-03-23 ИПТИП")
+                                       caption="Отлично, а теперь введи свою группу и институт в формате: ЭФБО-03-23 "
+                                               "ИПТИП")
 
-@dp.message(lambda message: message.from_user.id in register_states and register_states[message.from_user.id]["stage"] == 3)
+
+@dp.message(
+    lambda message: message.from_user.id in register_states and register_states[message.from_user.id]["stage"] == 3)
 async def stage_3_register_handler(message: Message):
     if message.text is not None:
         if message.text.find(" ") == -1:
@@ -51,7 +51,7 @@ async def stage_3_register_handler(message: Message):
                                        caption="Ты все неправильно ввел!!!")
         else:
             group, institution = message.text.split(" ")
-            if not(is_valid_group_number(group)):
+            if not (is_valid_group_number(group)):
                 await message.answer_photo(photo=pic_pathes["start"],
                                            caption="Ты неправильно ввел свою группу!")
             elif len(institution) >= 10:
@@ -68,7 +68,7 @@ async def stage_3_register_handler(message: Message):
                     group=register_states[message.from_user.id]["data"][3],
                     institution=register_states[message.from_user.id]["data"][4],
                     status='ACTIVE',
-                    tg_chat_id = message.from_user.id,
+                    tg_chat_id=message.from_user.id,
                 )
                 session.add(new_student)
                 session.commit()
@@ -83,8 +83,9 @@ async def command_start_handler(message: Message) -> None:
     if session.query(students).filter_by(tg_chat_id=message.from_user.id).first() is None:
         register_states[message.from_user.id] = {"stage": 1, "data": []}
         await message.answer_photo(photo=pic_pathes["start"],
-                                   caption=f"Привет, {hbold(message.from_user.full_name)}!\nЭто начало регистрации\nВведи свою фамилию и имя", )
+                                   caption=f"Привет, {hbold(message.from_user.full_name)}!\nЭто начало "
+                                           f"регистрации\nВведи свою фамилию и имя", )
     else:
         await message.answer_photo(photo=pic_pathes["start"],
-                               caption=f"Привет, {hbold(message.from_user.full_name)}!\nВыбери комикс!",
-                               reply_markup=start_keyboard.keyboard)
+                                   caption=f"Привет, {hbold(message.from_user.full_name)}!\nВыбери комикс!",
+                                   reply_markup=start_keyboard.keyboard)

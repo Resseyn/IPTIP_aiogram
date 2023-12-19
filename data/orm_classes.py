@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class Student(Base):
     __tablename__ = 'students'
     student_id = Column(Integer, Sequence('students_student_id_seq'), primary_key=True)

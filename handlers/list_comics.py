@@ -2,7 +2,6 @@ from aiogram import F
 from aiogram.types import CallbackQuery, InputMediaPhoto
 
 from database.mongo import mongo_comics
-from keyboard import start_keyboard
 from keyboard.comic_keyboard_constructor import create_comic_list_kb, create_comic_kb
 from loader import dp
 from utils.base_pics import pic_pathes

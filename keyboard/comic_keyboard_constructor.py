@@ -9,7 +9,7 @@ page_text = {
 }
 
 
-def create_comic_kb(type: str, comic_dict: dict,  page="1") -> InlineKeyboardMarkup:
+def create_comic_kb(comic_type: str, comic_dict: dict, page="1") -> InlineKeyboardMarkup:
     kb_builder = InlineKeyboardBuilder()
     buttons: list[InlineKeyboardButton] = []
     page = int(page)
@@ -20,7 +20,7 @@ def create_comic_kb(type: str, comic_dict: dict,  page="1") -> InlineKeyboardMar
             continue
         buttons.append(InlineKeyboardButton(
             text=page_text[(i + 1) // 2],
-            callback_data= type + "," + str(page + i)
+            callback_data=comic_type + "," + str(page + i)
         ))
     buttons.append(InlineKeyboardButton(
         text="Вернуться к комиксам",
@@ -30,10 +30,11 @@ def create_comic_kb(type: str, comic_dict: dict,  page="1") -> InlineKeyboardMar
 
     return kb_builder.as_markup()
 
-def create_comic_list_kb(chat_id: int, delete = False):
+
+def create_comic_list_kb(chat_id: int, delete=False):
     kb_builder = InlineKeyboardBuilder()
     buttons: list[InlineKeyboardButton] = []
-    result = mongo_comics.find_one({"chat_id":chat_id})
+    result = mongo_comics.find_one({"chat_id": chat_id})
     if result is None:
         buttons.append(InlineKeyboardButton(
             text="Вернуться к комиксам",
@@ -47,7 +48,8 @@ def create_comic_list_kb(chat_id: int, delete = False):
                     text=key,
                     callback_data=key + (",-1" if delete else ""),
                 ))
-        kb_builder.row(*buttons, width=1 if len(buttons) >= 6 else 2) #TODO: повторить подвиг вывода данных как со сниппетами
+        kb_builder.row(*buttons,
+                       width=1 if len(buttons) >= 6 else 2)  # TODO: повторить подвиг вывода данных как со сниппетами
         kb_builder.row(InlineKeyboardButton(
             text="Вернуться к комиксам",
             callback_data="back"))
