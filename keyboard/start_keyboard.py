@@ -14,9 +14,25 @@ big_button_3 = InlineKeyboardButton(
     text='Оригинальнейший комикс',
     callback_data='comic_3'
 )
+big_button_4 = InlineKeyboardButton(
+    text='Создать комикс',
+    callback_data='create'
+)
+big_button_5 = InlineKeyboardButton(
+    text='Мои комиксы',
+    callback_data='list'
+)
+big_button_6 = InlineKeyboardButton(
+    text='Удаление моих комиксов(',
+    callback_data='delete'
+)
+
 
 keyboard = InlineKeyboardMarkup(
     inline_keyboard=[[big_button_1],
                      [big_button_2],
-                     [big_button_3]]
+                     [big_button_3],
+                     [big_button_4],
+                     [big_button_5],
+                     [big_button_6]]
 )

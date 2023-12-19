@@ -7,7 +7,6 @@ from aiogram import Bot
 from aiogram.enums import ParseMode
 from loader import TOKEN
 from handlers import dp
-from server import app
 
 
 async def main() -> None:

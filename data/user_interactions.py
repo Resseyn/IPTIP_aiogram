@@ -1,1 +1,2 @@
-user_states = {}
+register_states = {}
+creating_states = {}
