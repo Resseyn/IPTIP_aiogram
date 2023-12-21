@@ -34,7 +34,6 @@ big_button_6 = InlineKeyboardButton(
 
 keyboard = InlineKeyboardMarkup(
     inline_keyboard=[[big_button_0],
-                     [big_button_01],
                      [big_button_1],
                      [big_button_2],
                      [big_button_3],
