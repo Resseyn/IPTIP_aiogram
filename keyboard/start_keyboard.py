@@ -1,5 +1,10 @@
 # Создаем объекты инлайн-кнопок
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
+
+big_button_0 = InlineKeyboardButton(
+    text='Открыть сайт',
+    web_app=WebAppInfo(url="https://lk.mirea.ru/"),
+)
 
 big_button_1 = InlineKeyboardButton(
     text='Комикс 1',
@@ -28,7 +33,9 @@ big_button_6 = InlineKeyboardButton(
 )
 
 keyboard = InlineKeyboardMarkup(
-    inline_keyboard=[[big_button_1],
+    inline_keyboard=[[big_button_0],
+                     [big_button_01],
+                     [big_button_1],
                      [big_button_2],
                      [big_button_3],
                      [big_button_4],

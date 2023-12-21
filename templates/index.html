@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{{ url_for('static', filename='output.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="flex flex-col items-center justify-center h-screen bg-gray-200">
+        <div class="card w-64 p-6 bg-white rounded shadow mb-4">
+          <h2 class="text-xl font-semibold text-gray-700">8 800 555-35-35</h2>
+          <p class="tab mt-2 text-gray-600">Количество покупок: 1</p>
+          <div class="flex justify-end mt-4">
+            <button class="incButton px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">Добавить</button>
+            <button class="del px-3 py-2 text-white bg-red-500 rounded hover:bg-green-600">Удалить</button>
+          </div>
+        </div>
+        <div  class= "card  w-64 p-6 bg-white rounded shadow">
+          <h2 class="text-xl font-semibold text-gray-700">+7 952 123-45-67</h2>
+          <p class="tab mt-2 text-gray-600">Количество покупок: 1</p>
+          <div class="flex justify-end mt-4">
+            <button class="incButton px-3 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600">Добавить</button>
+            <button class="del px-3 py-2 text-white bg-red-500 rounded hover:bg-green-600">Удалить</button>
+          </div>
+        </div>
+      </div>
+      
+<script src="{{ url_for('static', filename='java.js') }}"></script>
+
+</body>
+</html>
